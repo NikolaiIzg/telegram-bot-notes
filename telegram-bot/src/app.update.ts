@@ -1,5 +1,6 @@
 import { InjectBot, Start, Update } from 'nestjs-telegraf';
 import { Context, Telegraf } from 'telegraf';
+import { actionButtons } from './app.buttons';
 import { AppService } from './app.service';
 
 @Update()
@@ -9,5 +10,6 @@ export class AppController {
   @Start()
   async startCommand(ctx: Context) {
     await ctx.reply('Hi! Friend!');
+    await ctx.reply('Что ты хочешь сделать?', actionButtons());
   }
 }
