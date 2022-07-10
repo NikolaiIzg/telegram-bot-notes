@@ -37,4 +37,21 @@ export class AppController {
     await ctx.reply(allList(todos)) 
   }
 
+  @Hears('✅ Завершить')
+  async doneNote(ctx: Context) {
+    console.log(1);
+    await ctx.reply('Напиши № заметки')
+  }
+
+  @Hears('✏️ Редактирование')
+  async editNote(ctx: Context) {
+    console.log(2);
+    await ctx.reply('Напиши № заметки')
+  }
+
+  @Hears('❌ Удаление')
+  async deleteNote(ctx: Context) {
+    console.log(3);
+    await ctx.reply('Напиши № заметки')
+  }
 }
