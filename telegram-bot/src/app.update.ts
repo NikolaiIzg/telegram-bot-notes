@@ -105,5 +105,20 @@ export class AppUpdate {
 
      await ctx.reply(allList(notes.filter(note => note.id !== Number(message))))
    }
+
+   if(ctx.session.type === 'edit') {
+    const [noteId, noteName] = message.split(' | ')
+
+    const note = notes.find((n)=> n.id === Number(noteId))
+
+     if(!note) {
+       console.log('зашёл');
+       await ctx.deleteMessage()
+       await ctx.reply('Задач с таким № не найдено')
+       return
+     }
+      note.name = noteName
+      await ctx.reply(allList(notes))
+   }
   }
 }
