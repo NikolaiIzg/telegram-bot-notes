@@ -63,7 +63,7 @@ export class AppUpdate {
     await ctx.deleteMessage()
     await ctx.replyWithHTML(
 			'Напиши № и новое название задачи: \n\n' +
-				'В формате - <b>1 | Новое название</b>'
+				'В формате - <b>1: Новое название</b>'
 		)
   }
 
@@ -107,7 +107,7 @@ export class AppUpdate {
    }
 
    if(ctx.session.type === 'edit') {
-    const [noteId, noteName] = message.split(' | ')
+    const [noteId, noteName] = message.split(': ')
 
     const note = notes.find((n)=> n.id === Number(noteId))
 
