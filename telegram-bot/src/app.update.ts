@@ -14,7 +14,8 @@ export class AppUpdate {
 
   @Start()
   async startCommand(ctx: Context) {
-    await ctx.reply('Hi! Friend!');
+    await ctx.reply('Hello! Friend 👋🏼');
+    await ctx.reply('Меня зовут Notes Bot - я помогу тебе хранить заметки. Желаю приятного пользования ☺️');
     await ctx.reply('Что ты хочешь сделать?', actionButtons());
   }
 
@@ -22,7 +23,7 @@ export class AppUpdate {
   async creatNote(ctx: Context) {
     ctx.session.type = 'create'
     await ctx.deleteMessage()
-    await ctx.reply('Напиши заметку')
+    await ctx.reply('Напиши заметку:')
   }
 
   @Hears('📋 Список заметок')
@@ -37,7 +38,7 @@ export class AppUpdate {
   async doneNote(ctx: Context) {
     ctx.session.type = 'done'
     await ctx.deleteMessage()
-    await ctx.reply('Напиши № заметки')
+    await ctx.reply('Напиши № заметки:')
   }
 
   @Hears('✏️ Редактирование')
@@ -54,7 +55,7 @@ export class AppUpdate {
   async deleteNote(ctx: Context) {
     ctx.session.type = 'remove'
     await ctx.deleteMessage()
-    await ctx.reply('Напиши № заметки')
+    await ctx.reply('Напиши № заметки:')
   }
 
   @On('text')

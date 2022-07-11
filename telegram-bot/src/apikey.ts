@@ -1,1 +1,1 @@
-export const TG_TOKEN = '';
+export const TG_TOKEN = '5416039709:AAELO51XWNHA_poQXZI_C338n72osAqMquM';
