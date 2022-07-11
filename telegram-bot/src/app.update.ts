@@ -5,24 +5,6 @@ import { actionButtons } from './app.buttons';
 import { AppService } from './app.service';
 import { Context } from './context.interface';
 
-const notes = [
-  {
-    id: 1,
-    name: 'text1',
-    status: true
-  },
-  {
-    id: 2,
-    name: 'text2',
-    status: false
-  },
-  {
-    id: 3,
-    name: 'text3',
-    status: false
-  }
-]
-
 @Update()
 export class AppUpdate {
   constructor(
@@ -45,6 +27,7 @@ export class AppUpdate {
 
   @Hears('📋 Список заметок')
   async listNotes(ctx: Context){
+    const notes = await this.appService.getAll()
     console.log(notes);
     await ctx.deleteMessage()
     await ctx.reply(allList(notes)) 
@@ -78,9 +61,13 @@ export class AppUpdate {
   async getMessage(@Message('text') message: string, @Ctx() ctx: Context) {
    if(!ctx.session.type) return
 
+   if(ctx.session.type === 'create') {
+    const note = await this.appService.newNote(message)
+      await ctx.reply(allList(note))
+   }
+
    if(ctx.session.type === 'done') {
-     const note = notes.find((n)=> n.id === Number(message))
-     console.log('note: ', note);
+    const note = await this.appService.doneNote(Number(message))
 
 
       if(!note) {
@@ -89,12 +76,11 @@ export class AppUpdate {
         await ctx.reply('Задач с таким № не найдено')
         return
     }
-    note.status = !note.status
-    await ctx.reply(allList(notes))
+    await ctx.reply(allList(note))
    }
 
    if(ctx.session.type === 'remove') {
-    const note = notes.find((n)=> n.id === Number(message))
+    const note = await this.appService.deleteNote(Number(message))
 
       if(!note) {
       console.log('зашёл');
@@ -102,14 +88,12 @@ export class AppUpdate {
       await ctx.reply('Задач с таким № не найдено')
       return
      }   
-
-     await ctx.reply(allList(notes.filter(note => note.id !== Number(message))))
+    await ctx.reply(allList(note))
    }
 
    if(ctx.session.type === 'edit') {
     const [noteId, noteName] = message.split(': ')
-
-    const note = notes.find((n)=> n.id === Number(noteId))
+    const note = await this.appService.editNote(Number(noteId), noteName)
 
      if(!note) {
        console.log('зашёл');
@@ -117,8 +101,7 @@ export class AppUpdate {
        await ctx.reply('Задач с таким № не найдено')
        return
      }
-      note.name = noteName
-      await ctx.reply(allList(notes))
+      await ctx.reply(allList(note))
    }
   }
 }
